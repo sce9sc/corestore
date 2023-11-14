@@ -22,7 +22,7 @@ module.exports = class Corestore extends ReadyResource {
     super()
     const root = opts._root
     if(opts.storagefn){
-       this.storage = opts.storage(storage, { lock: PRIMARY_KEY_FILE_NAME, poolSize: opts.poolSize || POOL_SIZE, rmdir: true })
+       this.storage = opts.storagefn(storage, { lock: PRIMARY_KEY_FILE_NAME, poolSize: opts.poolSize || POOL_SIZE, rmdir: true })
     }else{
       this.storage = Hypercore.defaultStorage(storage, { lock: PRIMARY_KEY_FILE_NAME, poolSize: opts.poolSize || POOL_SIZE, rmdir: true })
     }
