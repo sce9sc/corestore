@@ -20,10 +20,12 @@ const POOL_SIZE = 512 // how many open fds to aim for before cycling them
 module.exports = class Corestore extends ReadyResource {
   constructor (storage, opts = {}) {
     super()
-
     const root = opts._root
-
-    this.storage = Hypercore.defaultStorage(storage, { lock: PRIMARY_KEY_FILE_NAME, poolSize: opts.poolSize || POOL_SIZE, rmdir: true })
+    if(opts.storagefn){
+       this.storage = opts.storage(storage, { lock: PRIMARY_KEY_FILE_NAME, poolSize: opts.poolSize || POOL_SIZE, rmdir: true })
+    }else{
+      this.storage = Hypercore.defaultStorage(storage, { lock: PRIMARY_KEY_FILE_NAME, poolSize: opts.poolSize || POOL_SIZE, rmdir: true })
+    }
     this.cores = root ? root.cores : new Map()
     this.cache = !!opts.cache
     this.primaryKey = opts.primaryKey || null
